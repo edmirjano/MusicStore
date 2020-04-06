@@ -1,0 +1,144 @@
+﻿@model IEnumerable<DomainModel.Models.Order>
+
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Orders</h2>
+@if (ViewBag.Message != null)
+{
+
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Message
+    </div>
+
+}
+
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>
+            Order Id
+        </th>
+        <th>
+            Shippning Information
+        </th>
+        <th>
+            Albums
+        </th>
+        <th>
+            Coupon
+        </th>
+        <th>
+            Total Payment
+        </th>
+        <th>
+            Completed
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>
+                            @item.shippingDetails.Name
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @item.shippingDetails.Adress
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @item.shippingDetails.Email
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @item.shippingDetails.Tel
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+            <td>
+                <table class="table table-bordered">
+                    @foreach (var order in item.OrderAlbum)
+                    {
+                        <tr>
+                            <td>
+                                @order.Albums.Name
+                            </td>
+                            <td>
+                                @order.Albums.Author.Name
+                            </td>
+                            <td>
+                                @order.Albums.Price $
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td>
+                @if (item.HasACoupon)
+                {
+                    <div class="bg-danger">
+                        @item.shippingDetails.CouponCode
+                    </div>
+                }
+            </td>
+            <td>
+                <h1>
+                    @item.TotalAmaunt $
+                </h1>
+            </td>
+            @if (item.Completed)
+            {
+                <td class="text-center align-middle bg-success">
+                    <div>
+                        Completed
+                    </div>
+                </td>
+            }
+            else
+            {
+                <td class="text-center align-middle bg-warning">
+                    <div>
+                        Not Completed
+                    </div>
+                </td>
+            }
+            <td>
+                <div class="btn-group">
+
+                @using (Html.BeginForm("MarkAsCompleted", "Admin", FormMethod.Get))
+                {
+                    <input type="hidden" name="orderId" value="@item.OrderId" />
+                    if (item.Completed)
+                    {
+                        <button type="submit" class="btn btn-danger">
+                            Roll Back
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-success">
+                            Mark as Completed
+                        </button>
+                    }
+                }
+                <a href="@Url.Action("DeleteOrder", "Admin", new { id= item.OrderId})" class="btn btn-primary">Delete</a>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>

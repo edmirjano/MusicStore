@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+
+    <div id="categories" class="col-xs-3">
+        <h2>Filter By Category</h2>
+        <hr />
+        <div class="btn-group" role="group" aria-label="Basic example">
+            @using (Html.BeginForm("Index", "Album", FormMethod.Get,
+                new { enctype = "multipart/form-data" }))
+            {
+
+
+                <input type="hidden" name="category" value="" />
+                <button type="submit" class="btn btn-lg @(ViewContext.RouteData.GetRequiredString("action") == "Index" ?" btn-danger" : "btn-secondary")" style="margin-bottom: 3px">
+                    All
+                </button>
+
+            }
+            @foreach (var category in Model.Categories)
+            {
+
+                using (Html.BeginForm("ByCategory", "Album", FormMethod.Post,
+                                        new { enctype = "multipart/form-data" }))
+                {
+                    var redButton = "";
+                    if (ViewContext.RouteData.GetRequiredString("action") == "ByCategory")
+                    {
+                        redButton = category.CategorId == Model.CurrentCategory.CategorId ? " btn-danger" : "btn-secondary";
+                    }
+
+                    <input type="hidden" name="categoryid" value="@category.CategorId" />
+                    <button type="submit" class="btn btn-lg @(redButton)" style="margin-bottom: 3px">
+                        @category.Name
+
+                    </button>
+
+                }
+
+            }
+        </div>
+        <hr />
+    </div>
+    <div class="col-xs-8">
+        @if (ViewContext.RouteData.GetRequiredString("action") == "ByCategory")
+        {
+            <h2 class="bg-warning">@Model.CurrentCategory.Name</h2>
+        }
+        else if (!String.IsNullOrEmpty(Model.SearchKeyword))
+        {
+            <h2 class="bg-info">Search Results for: @Model.SearchKeyword</h2>
+        }
+        else
+        {
+            <h2 class="bg-success">All Albums</h2>
+        }
+        <hr />
+        <div class="row" id="ads">
+            <!-- Category Card -->
+            @if (Model.Albums.Count < 1)
+            {
+                <h1 class="bg-danger">There are no Albums for this Topic</h1>
+            }
+            @foreach (var item in Model.Albums)
+            {
+
+                <a href="/Album/singleAlbum/@item.AlbumId">
+
+                    <div class="col-md-4 CustomMarginTop">
+                        <div class="card rounded">
+                            <div class="card-image">
+
+
+                                <span class="card-notify-badge bg-primary">@item.Category.Name</span>
+                                @if (item.OnSale)
+                                {
+                                    <span class="card-notify-year">SALE</span>
+                                }
+                                <img class="img-fluid CustomImg" src="@Url.Content(@item.ImagePath != null ? @item.ImagePath : " ")" alt="Image" min-height="300px" />
+                            </div>
+                            <div class="card-image-overlay m-auto">
+                                <span class="card-detail-badge">@item.Name</span>
+                                <span class="card-detail-badge">@item.Author.Name</span>
+                                <span class="card-detail-badge">@item.NrOfSongs Songs</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </a>
+            }
+
+        </div>
+        <hr />
+        @*here it is pagination section*@
+        @if (Model.Pagination > 1)
+        {
+            <div class="row">
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" style="display:inline-flex">
+
+
+                        @for (int i = 1; i <= Model.Pagination; i++)
+                        {
+
+                            <li class="page-item">
+                                @if (ViewContext.RouteData.GetRequiredString("action") == "Index")
+                                {
+
+                                    using (Html.BeginForm("Index", "Album", FormMethod.Get,
+                                    new { enctype = "multipart/form-data" }))
+                                    {
+                                        <input type="hidden" name="page" value="@i" />
+                                        <button class="page-link" type="submit">
+                                            @i
+                                        </button>
+                                    }
+
+                                }
+                                else
+                                {
+                                    using (Html.BeginForm("ByCategory", "Album", FormMethod.Get,
+                                           new { enctype = "multipart/form-data" }))
+                                    {
+
+                                        <input type="hidden" name="categoryid" value="@Model.CurrentCategory.CategorId" />
+                                        <input type="hidden" name="page" value="@i" />
+                                        <button class="page-link" type="submit">
+                                            @i
+                                        </button>
+                                    }
+                                }
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+</div>
+
+

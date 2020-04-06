@@ -1,0 +1,49 @@
+﻿@model IEnumerable<DomainModel.Models.Author>
+
+@{
+    ViewBag.Title = "Authors";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Authors</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateAuthor",null, new { @class = "btn btn-success" })
+</p>
+@if (ViewBag.Message != null)
+{
+
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Message
+    </div>
+
+}
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Age)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditAuthor", new { id = item.AuthorId }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "DetailsAuthor", new { id = item.AuthorId }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Delete", "DeleteAuthor", new { id = item.AuthorId }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>

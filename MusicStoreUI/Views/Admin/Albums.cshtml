@@ -1,0 +1,102 @@
+﻿
+
+@{
+    ViewBag.Title = "Albums";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Albums</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateAlbum", null, new { @class = "btn btn-success" })
+</p>
+@if (ViewBag.Message != null)
+{
+
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Message
+    </div>
+
+}
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Year
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Number of Songs
+        </th>
+        <th>
+            Image
+        </th>
+        <th>
+            On Sale
+        </th>
+        <th>
+            Author
+        </th>
+        <th>
+            Category
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Year
+            </td>
+            <td>
+                @item.Price
+            </td>
+            <td>
+                @if (item.NrOfSongs != 0)
+                {
+                    @item.NrOfSongs
+                }
+            </td>
+            <td>
+                @if (item.ImagePath != null)
+                {
+                    <img src="@Url.Content(@item.ImagePath != null ? @item.ImagePath : " ")" alt="Picture" width="40" height="40" />
+                }
+                else
+                {
+                    <div>
+                        No Image
+                    </div>
+                }
+
+            </td>
+            <td>
+                @if (item.OnSale)
+                {
+                    <div class="bg-danger text-center">On Sale</div>
+                }
+
+            </td>
+            <td>
+                @item.Author.Name
+            </td>
+            <td>
+                @item.Category.Name
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditAlbum", new { id = item.AlbumId }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "DetailsAlbum", new { id = item.AlbumId }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Delete", "DeleteAlbum", new { id = item.AlbumId }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>

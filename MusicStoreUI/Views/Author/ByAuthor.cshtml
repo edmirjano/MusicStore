@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "ByAuthor";
+}
+@if (Request.UrlReferrer != null)
+{
+    <br />
+    <button onclick="history.go(-1); return false;" class="btn btn-primary p-4">
+        Back
+    </button>
+}
+<div class="row">
+    <div class="card text-center h-100" style="border: 3px black">
+        <div class="card-block">
+            <h4 class="card-title">@Model.Author.Name</h4>
+            <h2><i class="fa fa-user fa-3x"></i></h2>
+        </div>
+        <div class="row px-2 no-gutters">
+            <div class="col-6">
+                <h3 class="card card-block border-top-0 border-left-0 border-bottom-0">@Model.Author.Age y.o.</h3>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row" id="ads">
+    <!-- Category Card -->
+    @if (Model.Albums.Count < 1)
+    {
+        <h1 class="bg-danger">There are no Albums for this Author</h1>
+    }
+    @foreach (var item in Model.Albums)
+    {
+
+        <a href="/Album/singleAlbum/@item.AlbumId">
+
+            <div class="col-md-4 CustomMarginTop">
+                <div class="card rounded">
+                    <div class="card-image">
+
+
+                        <span class="card-notify-badge bg-primary">@item.Category.Name</span>
+                        @if (item.OnSale)
+                        {
+                            <span class="card-notify-year">SALE</span>
+                        }
+                        <img class="img-fluid CustomImg" src="@Url.Content(@item.ImagePath)" alt="Alternate Text" min-height="300px" />
+                    </div>
+                    <div class="card-image-overlay m-auto">
+                        <span class="card-detail-badge">@item.Name</span>
+                        <span class="card-detail-badge">@item.Author.Name</span>
+                        <span class="card-detail-badge">@item.NrOfSongs Songs</span>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+    }
+
+</div>
+<hr />
+@if (Model.Pagination > 1)
+{
+    <div class="row">
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" style="display:inline-flex">
+
+
+                @for (int i = 1; i <= Model.Pagination; i++)
+                {
+
+                    <li class="page-item">
+                        @if (ViewContext.RouteData.GetRequiredString("action") == "Index")
+                        {
+
+                            using (Html.BeginForm("Index", "Album", FormMethod.Get,
+                            new { enctype = "multipart/form-data" }))
+                            {
+                                <input type="hidden" name="page" value="@i" />
+                                <button class="page-link" type="submit">
+                                    @i
+                                </button>
+                            }
+
+                        }
+                        else
+                        {
+                            using (Html.BeginForm("ByCategory", "Album", FormMethod.Get,
+                                   new { enctype = "multipart/form-data" }))
+                            {
+
+                                <input type="hidden" name="categoryid" value="@Model.CurrentCategory.CategorId" />
+                                <input type="hidden" name="page" value="@i" />
+                                <button class="page-link" type="submit">
+                                    @i
+                                </button>
+                            }
+                        }
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+}
+

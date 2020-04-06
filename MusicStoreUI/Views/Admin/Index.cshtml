@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Dashboard</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Type</th>
+            <th scope="col">Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Active Albums: </td>
+            <td>@ViewBag.Albums</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>Categories: </td>
+            <td>@ViewBag.Categories</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>Authors:</td>
+            <td>@ViewBag.Categories</td>
+        </tr>
+        <tr>
+            <th scope="row">4</th>
+            <td>Total Orders:</td>
+            <td>@ViewBag.Orders</td>
+        </tr>
+    </tbody>
+</table>

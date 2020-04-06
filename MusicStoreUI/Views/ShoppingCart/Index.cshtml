@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    #cartTable td {
+        vertical-align: middle;
+    }
+</style>
+<h2>Your cart</h2>
+@if (ViewBag.Message != null)
+{
+
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Message
+    </div>
+
+}
+<table class="table" id="cartTable">
+    <thead>
+        <tr>
+            <th>Quantity</th>
+            <th>Album</th>
+            <th>Artist</th>
+            <th class="text-right">Price</th>
+            <th class="text-right">Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var line in Model.Lines)
+        {
+            <tr>
+                <td class="text-center">@line.Quantity</td>
+                <td class="text-left">@line.Album.Name</td>
+                <td class="text-left">@line.Album.Author.Name</td>
+                <td class="text-right">@line.Album.Price.ToString("c")</td>
+                <td class="text-right">@((line.Quantity * line.Album.Price).ToString("c"))</td>
+                <td>
+                    @using (Html.BeginForm("RemoveFromCart", "ShoppingCart"))
+                    {
+                        <input type="hidden" name="AlbumId" value="@line.Album.AlbumId" />
+                        <input class="btn btn-sm btn-warning" type="submit" value="Remove" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right">Total:</td>
+            <td class="text-right">@Model.TotalPrice().ToString("c")</td>
+        </tr>
+    </tfoot>
+</table>
+<div class="text-center">
+    <a class="btn btn-primary" href="/Album/Index">Continue shopping</a>
+    @if (Model.Lines.Count >= 1 && !User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Checkout now", "Checkout", null, new { @class = "btn btn-success" })
+    }
+</div>
+

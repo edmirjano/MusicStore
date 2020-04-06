@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "SingleAlbum";
+}
+
+
+<div class="card">
+    <div class="row" style="padding-top: 27px;">
+        <aside class="col-sm-5 border-right">
+            <article class="gallery-wrap">
+                <div class="img-big-wrap">
+                    <div> <a href="#"><img src="@Url.Content(Model.Album.ImagePath)"></a></div>
+                </div> <!-- slider-product.// -->
+
+            </article> <!-- gallery-wrap .end// -->
+        </aside>
+        <aside class="col-sm-7">
+            <article class="card-body p-5">
+                <hr />
+                <h3 class="title mb-3">@Model.Album.Name</h3>
+                <hr />
+                <p class="price-detail-wrap">
+                    <span class="price h3 text-warning">
+                        <span class="currency">US $</span><span class="num">@Model.Album.Price</span>
+                    </span>
+                </p> <!-- price-detail-wrap .// -->
+                <dl class="item-property">
+                    <dt>Category</dt>
+                    <dd>
+                        <p>
+                            @Model.Album.Category.Name
+                        </p>
+                    </dd>
+                </dl>
+                <dl class="param param-feature">
+                    <dt>Author</dt>
+                    <dd>@Model.Album.Author.Name</dd>
+                </dl>  <!-- item-property-hor .// -->
+                <dl class="param param-feature">
+                    <dt>Number Of Songs</dt>
+                    <dd>@Model.Album.NrOfSongs</dd>
+                </dl>  <!-- item-property-hor .// -->
+                <dl class="param param-feature">
+                    <dt>Year</dt>
+                    <dd>@Model.Album.Year</dd>
+                </dl>  <!-- item-property-hor .// -->
+                <hr>
+                @using (Html.BeginForm("AddToCart", "ShoppingCart"))
+                {
+                    <input type="hidden" name="AlbumId" value="@Model.Album.AlbumId" />
+                    <button type="submit" class="btn btn-lg btn-primary text-uppercase"> Add to cart </button>
+                }
+            </article> <!-- card-body.// -->
+        </aside> <!-- col.// -->
+    </div> <!-- row.// -->
+</div>
+<hr />
+<h2>From @Model.Album.Category.Name</h2>
+<hr />
+<div class="row" id="ads">
+    @foreach (var item in Model.Related)
+    {
+        if (item.AlbumId != Model.Album.AlbumId)
+        {
+
+            <a href="/Album/singleAlbum/@item.AlbumId">
+                <div class="col-md-4 CustomMarginTop">
+                    <div class="card rounded">
+                        <div class="card-image">
+
+
+                            <span class="card-notify-badge bg-primary">@item.Category.Name</span>
+                            @if (item.OnSale)
+                            {
+                                <span class="card-notify-year">SALE</span>
+                            }
+                            <img class="img-fluid CustomImg" src="@Url.Content(@item.ImagePath != null ? @item.ImagePath : " ")" alt="Image" min-height="300px" />
+                        </div>
+                        <div class="card-image-overlay m-auto">
+                            <span class="card-detail-badge">@item.Name</span>
+                            <span class="card-detail-badge">@item.Author.Name</span>
+                            <span class="card-detail-badge">@item.NrOfSongs Songs</span>
+                        </div>
+
+                    </div>
+                </div>
+            </a>
+
+        }
+    }
+</div>
+<hr />
+<div class="text-center">
+    @using (Html.BeginForm("ByCategory", "Album"))
+    {
+        <input type="hidden" name="categoryid" value="@Model.Album.CategoryId" />
+        <button type="submit" class="btn btn-danger">
+            See All
+        </button>
+    }
+
+</div>

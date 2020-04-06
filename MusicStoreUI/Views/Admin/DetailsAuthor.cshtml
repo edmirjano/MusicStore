@@ -1,0 +1,35 @@
+﻿@model DomainModel.Models.Author
+
+@{
+    ViewBag.Title = "DetailsAuthor";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>DetailsAuthor</h2>
+
+<div>
+    <h4>Author</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditAuthor", new { id = Model.AuthorId }, new { @class = "btn btn-warning" }) |
+    @Html.ActionLink("Back to List", "Authors",null, new { @class = "btn btn-primary" })
+</p>

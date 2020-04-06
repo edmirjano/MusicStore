@@ -1,0 +1,83 @@
+﻿@model DomainModel.Models.Album
+
+@{
+    ViewBag.Title = "DetailsAlbum";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Album</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NrOfSongs)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NrOfSongs)
+        </dd>
+
+        <dt>
+            Image
+        </dt>
+
+        <dd>
+            <img class="img-thumbnail" width="150" height="150" src="@Url.Content(@Model.ImagePath)" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OnSale)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OnSale)
+        </dd>
+
+        <dt>
+            Category
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+
+        <dt>
+           Author
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditAlbum", new { id = Model.AlbumId }, new { @class = "btn btn-warning" }) |
+    @Html.ActionLink("Back to List", "Albums",null, new { @class = "btn btn-primary" })
+</p>
